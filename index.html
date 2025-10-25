@@ -10,6 +10,7 @@
 <body>
     <header>
         <h1>Advanced CSS Gradient Generator</h1>
+        <button id="random-btn" class="header-btn">Randomize!</button>
     </header>
 
     <main class="app-layout">
@@ -19,26 +20,29 @@
         <div class="controls-wrapper">
             <div class="controls-panel">
                 <h2>Options</h2>
+
                 <div class="control-group">
+                    <label>Type</label>
+                    <div class="radio-group">
+                        <input type="radio" id="type-linear" name="gradient-type" value="linear" checked>
+                        <label for="type-linear">Linear</label>
+                        <input type="radio" id="type-radial" name="gradient-type" value="radial">
+                        <label for="type-radial">Radial</label>
+                    </div>
+                </div>
+
+                <div class="control-group" id="angle-control">
                     <label for="angle">Angle</label>
                     <input type="range" id="angle" min="0" max="360" value="90">
                     <span id="angle-value">90°</span>
                 </div>
+
                 <div class="control-group">
-                    <div class="color-header">
-                        <label>Colors</label>
-                        <button id="add-color-btn">+</button>
+                    <label>Colors</label>
+                    <div id="color-stops">
+                        <!-- Color inputs will be dynamically added here -->
                     </div>
-                    <!-- This div will now hold all our color inputs -->
-                    <div id="color-inputs-container">
-                        <!-- We will generate these with JS, but start with two -->
-                        <div class="color-input-wrapper">
-                            <input type="color" class="color-input" value="#ff8c00">
-                        </div>
-                        <div class="color-input-wrapper">
-                            <input type="color" class="color-input" value="#ff0080">
-                        </div>
-                    </div>
+                    <button id="add-color-btn">+ Add Color</button>
                 </div>
             </div>
 
