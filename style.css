@@ -9,6 +9,9 @@ body {
     background-color: #f0f2f5;
     color: #333;
     line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 header {
@@ -16,6 +19,7 @@ header {
     padding: 1.5rem 2rem;
     text-align: center;
     border-bottom: 1px solid #e0e0e0;
+    flex-shrink: 0; /* Prevents header from shrinking */
 }
 
 header h1 {
@@ -24,20 +28,29 @@ header h1 {
 }
 
 .container {
-    max-width: 1000px;
+    width: 100%;
+    max-width: 1200px; /* A bit wider for larger screens */
     margin: 2rem auto;
     padding: 0 1rem;
-    display: flex;
-    flex-direction: column;
+    display: grid; /* Switched to Grid for more robust layout */
+    grid-template-columns: 2fr 1fr; /* 2 parts preview, 1 part controls */
     gap: 2rem;
+    flex-grow: 1; /* Allows container to fill vertical space */
 }
 
 #gradient-preview {
     width: 100%;
-    height: 300px;
+    min-height: 300px; /* Use min-height to ensure it's always visible */
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     border: 1px solid #ddd;
+    /* The height will be controlled by the grid layout now */
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .controls-panel, .output-panel {
@@ -80,9 +93,8 @@ input[type="range"] {
     cursor: pointer;
     background-color: transparent;
     border-radius: 8px;
-    -webkit-appearance: none; /* Hides default styles */
+    -webkit-appearance: none;
 }
-/* Styles the color picker's visible swatch */
 .color-input::-webkit-color-swatch-wrapper {
     padding: 0;
 }
@@ -97,7 +109,7 @@ input[type="range"] {
     padding: 1rem;
     border-radius: 5px;
     font-family: 'JetBrains Mono', monospace;
-    word-wrap: break-word; /* Prevents overflow */
+    word-wrap: break-word;
     margin-bottom: 1rem;
 }
 
@@ -120,21 +132,9 @@ input[type="range"] {
     background-color: #2980b9;
 }
 
-@media (min-width: 800px) {
+/* Responsive adjustments for smaller screens */
+@media (max-width: 800px) {
     .container {
-        flex-direction: row;
-        align-items: flex-start;
-    }
-    .controls-panel {
-        flex: 1;
-    }
-    #gradient-preview {
-        flex: 2;
-        height: auto;
-    }
-    .main-content {
-        display: flex;
-        flex-direction: column;
-        flex: 2;
+        grid-template-columns: 1fr; /* Stack everything in a single column */
     }
 }
