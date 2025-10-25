@@ -1,142 +1,42 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Poppins', sans-serif; background-color: #f0f2f5; color: #333; line-height: 1.6; }
+header { background-color: #ffffff; padding: 1.5rem 2rem; text-align: center; border-bottom: 1px solid #e0e0e0; }
+header h1 { color: #2c3e50; font-weight: 600; }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
-    line-height: 1.6;
-}
+.app-layout { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; display: flex; flex-direction: column; gap: 2rem; }
+#gradient-preview { width: 100%; min-height: 300px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #ddd; }
+.controls-wrapper { display: flex; flex-direction: column; gap: 2rem; }
+.controls-panel, .output-panel { background-color: #ffffff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
-header {
-    background-color: #ffffff;
-    padding: 1.5rem 2rem;
-    text-align: center;
-    border-bottom: 1px solid #e0e0e0;
-}
+h2 { margin-bottom: 1rem; font-weight: 600; color: #34495e; }
+.control-group { margin-bottom: 1.5rem; }
+.control-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
 
-header h1 {
-    color: #2c3e50;
-    font-weight: 600;
-}
+/* NEW: Styles for the header with the Add button */
+.color-header { display: flex; justify-content: space-between; align-items: center; }
+#add-color-btn { width: 30px; height: 30px; border-radius: 50%; border: none; background-color: #27ae60; color: white; font-size: 1.5rem; line-height: 1; cursor: pointer; transition: background-color 0.2s; }
+#add-color-btn:hover { background-color: #229954; }
 
-/* This is our main layout container */
-.app-layout {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-    display: flex;
-    /* Mobile First: Stack columns vertically by default */
-    flex-direction: column;
-    gap: 2rem;
-}
+/* NEW: Container for the dynamic color inputs */
+#color-inputs-container { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem; }
+.color-input-wrapper { position: relative; }
 
-/* This is the gradient preview box */
-#gradient-preview {
-    width: 100%;
-    /* Give it a minimum height so it's always visible on mobile */
-    min-height: 300px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    border: 1px solid #ddd;
-}
+input[type="range"] { width: 100%; cursor: pointer; }
 
-/* This is the new wrapper for the right-side panels */
-.controls-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-.controls-panel, .output-panel {
-    background-color: #ffffff;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-h2 {
-    margin-bottom: 1rem;
-    font-weight: 600;
-    color: #34495e;
-}
-
-.control-group {
-    margin-bottom: 1.5rem;
-}
-
-.control-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-}
-
-input[type="range"] {
-    width: 100%;
-    cursor: pointer;
-}
-
-.color-inputs {
-    display: flex;
-    gap: 1rem;
-}
-
-.color-input {
-    width: 50px;
-    height: 50px;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    background-color: transparent;
-    border-radius: 8px;
-    -webkit-appearance: none;
-}
+.color-input { width: 50px; height: 50px; border: none; padding: 0; cursor: pointer; background-color: transparent; border-radius: 8px; -webkit-appearance: none; }
 .color-input::-webkit-color-swatch-wrapper { padding: 0; }
 .color-input::-webkit-color-swatch { border: 1px solid #ccc; border-radius: 8px; }
 
-#css-output {
-    display: block;
-    background-color: #ecf0f1;
-    padding: 1rem;
-    border-radius: 5px;
-    font-family: 'JetBrains Mono', monospace;
-    word-wrap: break-word;
-    margin-bottom: 1rem;
-}
+/* NEW: Styles for the remove button */
+.remove-color-btn { position: absolute; top: -5px; right: -5px; width: 20px; height: 20px; border: none; border-radius: 50%; background-color: #e74c3c; color: white; cursor: pointer; font-weight: bold; line-height: 20px; text-align: center; opacity: 0; transition: opacity 0.2s; }
+.color-input-wrapper:hover .remove-color-btn { opacity: 1; }
 
-#copy-btn {
-    display: block;
-    width: 100%;
-    padding: 0.75rem;
-    border: none;
-    border-radius: 5px;
-    background-color: #3498db;
-    color: #ffffff;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
+#css-output { display: block; background-color: #ecf0f1; padding: 1rem; border-radius: 5px; font-family: 'JetBrains Mono', monospace; word-wrap: break-word; margin-bottom: 1rem; }
+#copy-btn { display: block; width: 100%; padding: 0.75rem; border: none; border-radius: 5px; background-color: #3498db; color: #ffffff; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background-color 0.2s; }
 #copy-btn:hover { background-color: #2980b9; }
 
-/* Media Query for larger screens (our desktop layout) */
 @media (min-width: 800px) {
-    .app-layout {
-        /* On large screens, switch to a horizontal row layout */
-        flex-direction: row;
-        /* THIS IS THE KEY: The default 'align-items: stretch' will make
-           both columns (preview and controls-wrapper) the same height. */
-    }
-
-    #gradient-preview {
-        flex: 2; /* Preview takes up 2/3 of the space */
-    }
-
-    .controls-wrapper {
-        flex: 1; /* Controls take up 1/3 of the space */
-    }
+    .app-layout { flex-direction: row; }
+    #gradient-preview { flex: 2; }
+    .controls-wrapper { flex: 1; }
 }
