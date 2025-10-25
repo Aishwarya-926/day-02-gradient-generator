@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 2: CSS Gradient Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>CSS Gradient Generator</h1>
+    </header>
+
+    <main class="container">
+        <!-- The visual preview of the gradient -->
+        <div id="gradient-preview"></div>
+
+        <div class="controls-panel">
+            <h2>Options</h2>
+            <div class="control-group">
+                <label for="angle">Angle</label>
+                <input type="range" id="angle" min="0" max="360" value="90">
+                <span id="angle-value">90°</span>
+            </div>
+            <div class="control-group">
+                <label>Colors</label>
+                <div class="color-inputs">
+                    <input type="color" class="color-input" value="#ff8c00">
+                    <input type="color" class="color-input" value="#ff0080">
+                </div>
+            </div>
+        </div>
+
+        <div class="output-panel">
+            <h2>CSS Code</h2>
+            <code id="css-output">background: linear-gradient(90deg, #ff8c00, #ff0080);</code>
+            <button id="copy-btn">Copy to Clipboard</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
