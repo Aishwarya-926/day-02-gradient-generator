@@ -16,7 +16,8 @@ let colors = ['#ff8c00', '#ff0080']; // Initial colors
 // --- Functions ---
 
 /**
- * Generates the CSS gradient string based on the current state.
+ * Generates the CSS gradient string and updates the UI.
+ * This is our main "render" function.
  */
 function generateGradient() {
     const activeType = document.querySelector('input[name="gradient-type"]:checked').value;
@@ -26,10 +27,10 @@ function generateGradient() {
     let gradientString;
     if (activeType === 'linear') {
         gradientString = `linear-gradient(${angle}deg, ${colorString})`;
-        angleControl.style.display = 'block'; // Show angle control
+        angleControl.style.display = 'block';
     } else {
         gradientString = `radial-gradient(circle, ${colorString})`;
-        angleControl.style.display = 'none'; // Hide angle control
+        angleControl.style.display = 'none';
     }
     
     gradientPreview.style.background = gradientString;
@@ -38,74 +39,49 @@ function generateGradient() {
 }
 
 /**
- * Creates and adds a new color stop element to the DOM.
- * @param {string} color - The initial color value for the new stop.
- */
-function createColorStop(color) {
-    const colorStopDiv = document.createElement('div');
-    colorStopDiv.className = 'color-stop';
-
-    const colorInput = document.createElement('input');
-    colorInput.type = 'color';
-    colorInput.className = 'color-input';
-    colorInput.value = color;
-
-    const removeBtn = document.createElement('button');
-    removeBtn.className = 'remove-color-btn';
-    removeBtn.textContent = 'x';
-    
-    colorStopDiv.appendChild(colorInput);
-    colorStopDiv.appendChild(removeBtn);
-    colorStopsContainer.appendChild(colorStopDiv);
-}
-
-/**
- * Renders all color stops based on the current 'colors' array.
+ * Renders all color stop input elements based on the current 'colors' array.
  */
 function renderColorStops() {
-    colorStopsContainer.innerHTML = ''; // Clear existing stops
-    colors.forEach(color => createColorStop(color));
+    // Clear existing color stops before re-rendering
+    colorStopsContainer.innerHTML = ''; 
+    
+    colors.forEach((color, index) => {
+        const colorStopDiv = document.createElement('div');
+        colorStopDiv.className = 'color-stop';
+
+        const colorInput = document.createElement('input');
+        colorInput.type = 'color';
+        colorInput.className = 'color-input';
+        colorInput.value = color;
+        // Store the index on the element for easy access later
+        colorInput.dataset.index = index; 
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'remove-color-btn';
+        removeBtn.textContent = 'x';
+        removeBtn.dataset.index = index;
+
+        // Only show the remove button if there are more than 2 colors
+        if (colors.length > 2) {
+            colorStopDiv.appendChild(removeBtn);
+        }
+        
+        colorStopDiv.appendChild(colorInput);
+        colorStopsContainer.appendChild(colorStopDiv);
+    });
 }
 
 /**
  * Generates a random hex color.
- * @returns {string} - A random color string, e.g., '#8a2be2'.
  */
 function getRandomColor() {
-    const letters = '0123456789abcdef';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+    return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
 }
 
 // --- Event Handlers ---
 
-function handleColorStopsChange(e) {
-    // Update colors array when a color input changes
-    if (e.target.classList.contains('color-input')) {
-        const inputs = [...colorStopsContainer.querySelectorAll('.color-input')];
-        const index = inputs.indexOf(e.target);
-        colors[index] = e.target.value;
-    }
-    // Remove a color stop
-    if (e.target.classList.contains('remove-color-btn')) {
-        const inputs = [...colorStopsContainer.querySelectorAll('.color-input')];
-        const parent = e.target.parentElement;
-        const index = inputs.indexOf(parent.querySelector('.color-input'));
-        
-        // Don't allow removing the last two colors
-        if (colors.length > 2) {
-            colors.splice(index, 1);
-            renderColorStops();
-        }
-    }
-    generateGradient();
-}
-
 function handleAddColor() {
-    if (colors.length < 10) { // Limit to 10 colors
+    if (colors.length < 10) { // Let's set a reasonable limit
         colors.push(getRandomColor());
         renderColorStops();
         generateGradient();
@@ -113,7 +89,7 @@ function handleAddColor() {
 }
 
 function handleRandomize() {
-    const numColors = colors.length;
+    const numColors = Math.max(2, colors.length); // Keep the same number of colors
     colors = [];
     for (let i = 0; i < numColors; i++) {
         colors.push(getRandomColor());
@@ -130,17 +106,36 @@ function copyToClipboard() {
     }).catch(err => console.error('Failed to copy: ', err));
 }
 
-// --- Event Listeners ---
+// --- Event Listeners using Delegation ---
 
+// Handles clicks on dynamically added "remove" buttons
+colorStopsContainer.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-color-btn')) {
+        const index = parseInt(e.target.dataset.index, 10);
+        colors.splice(index, 1);
+        renderColorStops();
+        generateGradient();
+    }
+});
+
+// Handles color changes in dynamically added color inputs
+colorStopsContainer.addEventListener('input', (e) => {
+    if (e.target.classList.contains('color-input')) {
+        const index = parseInt(e.target.dataset.index, 10);
+        colors[index] = e.target.value;
+        generateGradient();
+    }
+});
+
+// Static element listeners
 angleInput.addEventListener('input', generateGradient);
 gradientTypeRadios.forEach(radio => radio.addEventListener('change', generateGradient));
-colorStopsContainer.addEventListener('input', handleColorStopsChange);
-colorStopsContainer.addEventListener('click', handleColorStopsChange);
 addColorBtn.addEventListener('click', handleAddColor);
 randomBtn.addEventListener('click', handleRandomize);
 copyBtn.addEventListener('click', copyToClipboard);
 
 // --- Initial Call ---
+// Use DOMContentLoaded to make sure the script runs after the page is ready
 document.addEventListener('DOMContentLoaded', () => {
     renderColorStops();
     generateGradient();
