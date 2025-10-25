@@ -3,22 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 2: CSS Gradient Generator</title>
+    <title>Day 2: Advanced CSS Gradient Generator</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-        <h1>CSS Gradient Generator</h1>
+        <h1>Advanced CSS Gradient Generator</h1>
     </header>
 
-    <!-- Renamed to 'app-layout' for clarity -->
     <main class="app-layout">
         
-        <!-- Column 1: The Preview -->
         <div id="gradient-preview"></div>
 
-        <!-- Column 2: A wrapper for both control panels -->
         <div class="controls-wrapper">
             <div class="controls-panel">
                 <h2>Options</h2>
@@ -28,21 +25,29 @@
                     <span id="angle-value">90°</span>
                 </div>
                 <div class="control-group">
-                    <label>Colors</label>
-                    <div class="color-inputs">
-                        <input type="color" class="color-input" value="#ff8c00">
-                        <input type="color" class="color-input" value="#ff0080">
+                    <div class="color-header">
+                        <label>Colors</label>
+                        <button id="add-color-btn">+</button>
+                    </div>
+                    <!-- This div will now hold all our color inputs -->
+                    <div id="color-inputs-container">
+                        <!-- We will generate these with JS, but start with two -->
+                        <div class="color-input-wrapper">
+                            <input type="color" class="color-input" value="#ff8c00">
+                        </div>
+                        <div class="color-input-wrapper">
+                            <input type="color" class="color-input" value="#ff0080">
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="output-panel">
                 <h2>CSS Code</h2>
-                <code id="css-output">background: linear-gradient(90deg, #ff8c00, #ff0080);</code>
+                <code id="css-output"></code>
                 <button id="copy-btn">Copy to Clipboard</button>
             </div>
         </div>
-
     </main>
 
     <script src="script.js"></script>
